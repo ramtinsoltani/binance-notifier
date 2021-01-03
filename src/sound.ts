@@ -1,4 +1,3 @@
-import Sound from 'play-sound';
 import app from 'argumental';
 import os from 'os';
 import { AppData, PriceState } from './models';
