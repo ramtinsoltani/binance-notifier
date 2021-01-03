@@ -1,8 +1,9 @@
 import Sound from 'play-sound';
 import app from 'argumental';
+import os from 'os';
 import { AppData, PriceState } from './models';
 import path from 'path';
-const player = Sound({});
+import child from 'child_process';
 
 export function notify(state: PriceState): Promise<void> {
 
@@ -18,12 +19,28 @@ export function notify(state: PriceState): Promise<void> {
 
     }
 
-    player.play(path.resolve(__dirname, `../assets/${filename}.mp3`), (error: Error) => {
+    // Windows: Use /assets/player.exe to play the sound
+    if ( os.type() === 'Windows_NT' ) {
 
-      if ( error ) reject(error);
-      else resolve();
+      child.exec(`"${path.resolve(__dirname, '..', 'assets', 'player.exe')}" "${path.resolve(__dirname, '..', 'assets', filename + '.mp3')}"`, error => {
 
-    });
+        if ( error ) reject(error);
+        else resolve();
+
+      });
+
+    }
+    // MacOS: Use the built-in command 'afplay' to play the sound
+    else if ( os.type() === 'Darwin' ) {
+
+      child.exec(`afplay ${path.resolve(__dirname, '..', 'assets', filename + '.mp3').replace(/ /g, '\\ ')}`, error => {
+
+        if ( error ) reject(error);
+        else resolve();
+
+      });
+
+    }
 
   });
 

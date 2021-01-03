@@ -80,6 +80,7 @@ app
 
   const data: DataUpdate = {};
   let logged: boolean = false;
+  let output: string;
 
   // Populate base data with unknown state
   for ( const name in app.data<AppData>().config.markets ) {
@@ -159,8 +160,15 @@ app
 
     }
 
-    // Render output and update the console
-    const output = renderOutput(data);
+    // Update the output
+    output = renderOutput(data);
+
+  });
+
+  setInterval(() => {
+
+    if ( ! output ) return;
+
     const linesCount = output.split('\n').length - 1;
 
     if ( logged ) {
@@ -173,7 +181,7 @@ app
     process.stdout.write(output);
     logged = true;
 
-  });
+  }, 100);
 
 })
 
