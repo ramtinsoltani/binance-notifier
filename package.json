@@ -1,6 +1,6 @@
 {
   "name": "binance-notifier",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Crypto market price notifier in Binance",
   "main": "dist/index.js",
   "scripts": {
