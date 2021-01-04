@@ -63,9 +63,19 @@ app
 .sanitize(value => value.toUpperCase().replace(/\//g, '').trim())
 .argument('<target>', 'a target value as the threshold')
 .validate(app.NUMBER)
-.action(async args => {
+.action(args => {
 
   app.data<AppData>().config.markets[args.market] = args.target;
+
+})
+
+.command('remove market', 'removes a market from the watch list')
+.argument('<market>', 'a market name')
+.validate(app.STRING)
+.sanitize(value => value.toUpperCase().replace(/\//g, '').trim())
+.action(args => {
+
+  app.data<AppData>().config.markets[args.market] = undefined;
 
 })
 
